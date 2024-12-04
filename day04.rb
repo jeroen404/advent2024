@@ -40,29 +40,10 @@ def start_search(x,y,grid,word)
     neighbours(x,y,grid[0].length,grid.length).each do |nx,ny|
         if grid[y][x] == word[0]
             matches += search_direction(nx,ny,nx-x,ny-y,grid,word[1..-1]) 
-            #debug
-            if search_direction(nx,ny,nx-x,ny-y,grid,word[1..-1]) > 0
-                #puts "found #{word} at #{x},#{y} in direction #{nx-x},#{ny-y}"
-            end
         end
     end
     return matches
 end
-
-# def search(x,y,grid,word)
-#     puts "searching for #{word} at #{x},#{y}"
-#     puts "grid[y][x] = #{grid[y][x]}"
-#     matches = 0
-#     if grid[y][x] == word[0]
-#         if word.length == 1
-#             return 1
-#         end
-#         neighbours(x,y,grid[0].length,grid.length).each do |nx,ny|
-#             matches += search(nx,ny,grid,word[1..-1])
-#         end
-#     end
-#     return matches
-# end
 
 count = 0
 (0..input.length-1).each do |y|
