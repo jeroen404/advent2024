@@ -48,9 +48,6 @@ while line = gets
     updates << Update.parse(line.chomp)
 end
 
-#puts updates.filter { |update| ! orderrules.all? { |rule| rule.rule_followed?(update) } }.map { |update| orderrules.each { |rule| rule.apply_rule(update) } }
-
-#puts updates.filter { |update| ! orderrules.all? { |rule| rule.rule_followed?(update) } }.map { |update| orderrules.inject { |update , rule| rule.apply_rule(update)}}.to_s
 
 wrong_updates = updates.filter { |update| !orderrules.all? { |rule| rule.rule_followed?(update) } }
 wrong_updates.each do |update| 
@@ -61,11 +58,6 @@ wrong_updates.each do |update|
         end 
     end
 end
-
-#wrong_updates.map { |update| orderrules.inject(update) { |u, rule| rule.apply_rule(u) } }
-
-
-
 
 puts wrong_updates.map(&:middle_page).inject(0, :+)
                 
