@@ -34,24 +34,6 @@ def next_move(x,y,char)
     return x + $movement_mapping[char][0], y + $movement_mapping[char][1]
 end
 
-def print_world(extra_x,extra_y,guard_x,guard_y,trail)
-    $world.each_with_index do |line,y|
-        line.each_with_index do |c,x|
-            if x == extra_x && y == extra_y
-                print 'O'
-            elsif x == guard_x && y == guard_y
-                print 'G'
-            elsif trail[[x,y]] 
-                print 'X'
-            else
-                print c
-            end
-        end
-        puts ''
-    end
-    puts ''
-end
-
 def loops?
     loops = false
     guard_x = $guard_start_x
@@ -74,7 +56,6 @@ def loops?
         else
             guard_char = $guard_chars[($guard_chars.index(guard_char) + 1) % 4]
         end
-        #print_world(x,y,guard_x,guard_y,trail)
     end
     return loops,trail
 end
