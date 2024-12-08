@@ -10,7 +10,7 @@ def distance(a,b)
 end
 
 def is_double_distance_x_y?(x,y,x1,y1,x2,y2)
-    return distance(x,x1)==2*distance(x,x2) && distance(y,y1)==2*distance(y,y2) || distance(x,x2)==2*distance(x,x1) && distance(y,y2)==2*distance(y,y1)
+    return distance(x,x1)==2*distance(x,x2) && distance(y,y1)==2*distance(y,y2) || is_double_distance?(x,y,x2,y2,x1,y1)
 end
 
 def inline?(x,y,x1,y1,x2,y2)
