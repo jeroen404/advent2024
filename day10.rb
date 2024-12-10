@@ -5,6 +5,7 @@ $world = []
 $trail_heads = []
 $valid_cache = {}
 
+$part2 = true
 
 # read from stdin
 y=0
@@ -39,7 +40,7 @@ def peaks_reachable(x,y)
     if $world[y][x] == 9
         return [[x,y]]
     end
-    return valid_neighbors(x,y).flat_map { |xx,yy| peaks_reachable(xx,yy) }.uniq
+    return valid_neighbors(x,y).flat_map { |xx,yy| peaks_reachable(xx,yy) }.then { |a| $part2 ? a : a.uniq }
 end
 
 def print_world
