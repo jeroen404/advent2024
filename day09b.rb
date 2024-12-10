@@ -112,18 +112,23 @@ class Disk
     
     def defragment 
         right_pointer = @tail
+        cache_start_points = {}
         while right_pointer != @head do 
             while right_pointer != @head && right_pointer.id.nil? do
                 right_pointer = right_pointer.prev
             end
-            left_pointer = @head
-            while left_pointer != right_pointer && ! ( left_pointer.id.nil? && left_pointer.size >= right_pointer.size) do
+            left_pointer = cache_start_points[right_pointer.size] || @head
+            while (left_pointer != @tail) && left_pointer != right_pointer && ! ( left_pointer.id.nil? && left_pointer.size >= right_pointer.size) do
                     left_pointer = left_pointer.next
             end
             orig_right_pointer_prev = right_pointer.prev
-            if left_pointer != right_pointer
+            if (left_pointer != right_pointer) && (left_pointer != @tail)
                 move(left_pointer, right_pointer)
+                cache_start_points[right_pointer.size] = right_pointer
+            else
+                cache_start_points[right_pointer.size] = @tail
             end
+            
             right_pointer = orig_right_pointer_prev
         end
     end
