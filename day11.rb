@@ -22,9 +22,9 @@ def blink(number,blinks)
     if blinks == $total_blinks
         return 1
     end
-    if $blink_cache[[number,blinks]]
-        return $blink_cache[[number,blinks]]
-    end
+    key = (number << 7) | blinks # 2^7 = 128
+    cache = $blink_cache[key]
+    return cache if cache
     if number == 0
         result = blink(1,blinks + 1)
     else 
@@ -36,7 +36,7 @@ def blink(number,blinks)
             result = blink(number * 2024,blinks + 1)
         end
     end
-    $blink_cache[[number,blinks]] = result
+    $blink_cache[key] = result
     return result
 end
 
