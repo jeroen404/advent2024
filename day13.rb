@@ -28,6 +28,15 @@ class ClawMachine < Struct.new(:buttonA,:buttonB,:prize)
         #b = (prize.x - a * buttonA.x) / buttonB.x  # both work
         return a,b
     end 
+
+    def valid?(a,b)
+        return a*buttonA.x + b*buttonB.x == prize.x && a*buttonA.y + b*buttonB.y == prize.y
+    end
+
+    def token_cost
+        a,b = solve
+        return valid?(a,b) ? 3*a + b : 0
+    end
 end
 
 $clawmachines = []
@@ -44,11 +53,4 @@ loop do
     break if gets.nil?
 end
 
-token_cost = 0
-$clawmachines.each do |clawmachine|
-    a,b = clawmachine.solve
-    if a*clawmachine.buttonA.x + b*clawmachine.buttonB.x == clawmachine.prize.x && a*clawmachine.buttonA.y + b*clawmachine.buttonB.y == clawmachine.prize.y
-        token_cost += 3*a + b
-    end
-end
-puts "Total token cost: #{token_cost}"
+puts $clawmachines.map(&:token_cost).inject(:+)
