@@ -17,9 +17,19 @@ $movement_mapping = {
     '<' => [-1, 0]
 }
 
-class Path < Struct.new(:head,:direction,:cost)
+class Path < Struct.new(:head,:direction,:cost,:parent)
+    include Comparable  
     def <=>(other)
         return self.cost <=> other.cost
+    end
+    def full_path
+        path = []
+        current = self
+        while current
+            path << current.head
+            current = current.parent
+        end
+        return path
     end
 end
 
@@ -54,45 +64,42 @@ def turning_cost(direction1,direction2)
     return diff * $cost_of_turn
 end
 
-def shortest_path(start,finish,start_direction)
+def shortest_paths(start,finish,start_direction)
     paths = MultiRBTree.new()
-    start = Path.new(start,start_direction,0)
+    start = Path.new(start,start_direction,0,nil)
     paths[start] = true
     visited = {}
+    all_shortest = []
+    shortest_distance = nil
     loop do
         shortest = paths.first ?  paths.first[0] : nil
         if !shortest
             return nil
         end
+        if shortest_distance && shortest.cost > shortest_distance
+            return all_shortest
+        end
         if shortest.head == finish
-            return shortest
+            if !shortest_distance 
+                shortest_distance = shortest.cost
+            end
+            if shortest.cost == shortest_distance
+            all_shortest << shortest
+            end
         end
         paths.delete(shortest)
-        #visited[[shortest.head,shortest.direction]] = true
-        visited[[shortest.head]] = true
+        visited[[shortest.head,shortest.direction]] = true
+        #visited[[shortest.head]] = true
         neighbors_with_direction(shortest.head) do |neighbor,neighbor_direction|
             cost = shortest.cost + turning_cost(shortest.direction,neighbor_direction) + 1
-            #if !visited[[neighbor,neighbor_direction]]
-            if !visited[[neighbor]]
-                paths[Path.new(neighbor,neighbor_direction,cost)] = true
+            if !visited[[neighbor,neighbor_direction]]
+            #if !visited[[neighbor]]
+                paths[Path.new(neighbor,neighbor_direction,cost,shortest)] = true
             end
         end
     end
 end
 
-def is_on_a_shortest_path(start,finish,start_direction,place,shortest_cost)
-    if place == finish || place == start
-        return true
-    end
-    path1 = shortest_path(start,place,start_direction)
-    #puts "Place #{place} path1: #{path1.inspect}"
-    path2 = shortest_path(place,finish,path1.direction)
-    if !path1 || !path2
-        return false
-    end
-    puts "Place #{place} path1: #{path1.cost} path2: #{path2.cost} shortest: #{shortest_cost}"
-    return path1.cost + path2.cost == shortest_cost
-end
 
 
 while line = gets
@@ -109,21 +116,12 @@ while line = gets
 end
 
 puts "Finish: #{$finish}"
-#print_world
 
-shortest = shortest_path($start,$finish,'>').cost
+shortest_paths = shortest_paths($start,$finish,'>')
+shortest = shortest_paths[0].cost
+
+nb_seats = shortest_paths.flat_map { |path| path.full_path }.uniq.length
 
 puts shortest
-
-nb_seats = 0
-(0...$world.length).each do |y|
-    (0...$world[0].length).each do |x|
-        if $world[y][x] != '#'
-            if is_on_a_shortest_path($start,$finish,'>',[x,y],shortest)
-                $world[y][x] = 'O'
-                nb_seats += 1
-            end
-        end
-    end
-end
 puts nb_seats
+
