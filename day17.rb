@@ -63,8 +63,6 @@ class Computer < Struct.new(:register_a, :register_b, :register_c, :instruction_
 
     def execute
         instruction = @programm[instruction_pointer]
-        #puts "#{@@instruction_set_names[instruction.op]} #{instruction.arg}" if $debug
-        #puts "A #{register_a} B #{register_b} C #{register_c}" if $debug
         @@instruction_set[instruction.op].call(self,instruction.arg) 
     end
 
@@ -118,7 +116,7 @@ computer.print_programm if $debug
 needed_output = code.split(',').reverse
 
 correct_so_far = [0]
-needed_output.each_with_index do |needed_number,index|
+needed_output.each do |needed_number|
     new_correct = []
     correct_so_far.each do |correct|
         (0..7).each do |digit_a|
