@@ -23,6 +23,8 @@ class Computer < Struct.new(:register_a, :register_b, :register_c, :instruction_
     ]
     @@instruction_set_names = ['adv','bxl','bst','jnz','bxc','out','bdv','cdv']
     
+    @output_string = nil
+
     def initialize(register_a, register_b, register_c, programm_code)
         @programm = programm_code.split(',').each_slice(2).map { |op,arg| Instruction.new(op.to_i,arg.to_i) }
         super(register_a, register_b, register_c, 0)
@@ -47,14 +49,22 @@ class Computer < Struct.new(:register_a, :register_b, :register_c, :instruction_
         @output_string = @output_string ? "#{@output_string},#{string}" : string
     end
 
+    def reset
+        self.register_a = 0
+        self.register_b = 0
+        self.register_c = 0
+        self.instruction_pointer = 0
+        @output_string = nil
+    end
+
     def next_instruction
         self.instruction_pointer = instruction_pointer + 1
     end
 
     def execute
         instruction = @programm[instruction_pointer]
-        puts "#{@@instruction_set_names[instruction.op]} #{instruction.arg}" if $debug
-        puts "#{register_a} #{register_b} #{register_c}" if $debug
+        #puts "#{@@instruction_set_names[instruction.op]} #{instruction.arg}" if $debug
+        #puts "A #{register_a} B #{register_b} C #{register_c}" if $debug
         @@instruction_set[instruction.op].call(self,instruction.arg) 
     end
 
@@ -85,7 +95,46 @@ gets #spacer
 code = gets.chomp.sub(/Program: /,'')
 computer = Computer.new(a,b,c,code)
 
+# part1
+puts computer.run 
+
 computer.print_programm if $debug
-#puts computer.run
+# part2
+# bst 4   b = a mod 8
+# bxl 1   b = b xor 1
+# cdv 5   c = a / 2^b
+# bxl 5   b = b xor 5
+# bxc 3   b = b xor c
+# adv 3   a = a / 2^3
+# out 5   ouput b mod 8
+# jnz 0   until a == 0
+
+# b = (a mod 8) xor 1
+# c = a >> b
+# output (b xor 5 xor c) mod 8
+# a = a >> 3
+# until a == 0
+
+needed_output = code.split(',').reverse
+
+correct_so_far = [0]
+needed_output.each_with_index do |needed_number,index|
+    new_correct = []
+    correct_so_far.each do |correct|
+        (0..7).each do |digit_a|
+            try_number = (correct << 3 ) + digit_a
+            computer.reset
+            computer.register_a = try_number 
+            total_output = computer.run
+            output = total_output.split(',').first.to_i
+            if output == needed_number.to_i
+                new_correct << try_number
+            end
+        end
+    end
+    correct_so_far = new_correct
+end
+
+puts correct_so_far.min
 
 
