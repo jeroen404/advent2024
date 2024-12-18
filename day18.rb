@@ -90,17 +90,38 @@ end
 shortest_path_found = shortest_path($start,$finish)
 #part 1
 puts shortest_path_found.cost
-all_coords = shortest_path_found.full_path
-$bytes_strings.slice($bytes_per_step..-1).each do |line|
-    
-    x,y = line.split(',').map(&:to_i)
-    $world[[x,y]] = 1
-    if all_coords.include?([x,y])
-        shortest_path_found = shortest_path($start,$finish)
-        if ! shortest_path_found
-            puts "found at #{x},#{y}"
-            break
-        end
-        all_coords = shortest_path_found.full_path
+# all_coords = shortest_path_found.full_path
+# $bytes_strings.slice($bytes_per_step..-1).each do |line|   
+#     x,y = line.split(',').map(&:to_i)
+#     $world[[x,y]] = 1
+#     if all_coords.include?([x,y])
+#         shortest_path_found = shortest_path($start,$finish)
+#         if ! shortest_path_found
+#             puts "found at #{x},#{y}"
+#             break
+#         end
+#         all_coords = shortest_path_found.full_path
+#     end
+# end
+
+
+$bytes = $bytes_strings.map { |line| line.split(',').map(&:to_i) }
+
+start_range= $bytes_per_step
+stop_range = $bytes_strings.length
+loop do
+    middle = (start_range + stop_range) / 2
+    $bytes[0...middle].each do |x,y|
+        $world[[x,y]] = 1
     end
+    shortest_path_found = shortest_path($start,$finish)
+    if shortest_path_found
+        start_range = middle
+    else
+        stop_range = middle
+    end
+    $world = {}
+    puts "start_range: #{start_range}, stop_range: #{stop_range}"
+    break if stop_range - start_range < 2
 end
+puts $bytes[start_range].join(',')
