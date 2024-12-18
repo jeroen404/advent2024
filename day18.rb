@@ -60,7 +60,6 @@ def shortest_path(start,finish)
             if !visited[[neighbor]]
                     paths.push(Path.new(neighbor,cost,shortest))
                     visited[[neighbor]] = cost + 1
-                end
             end
         end
     end
@@ -92,7 +91,7 @@ shortest_path_found = shortest_path($start,$finish)
 #part 1
 puts shortest_path_found.cost
 
-$bytes_strings.slice($bytes_per_step+1..-1).each do |line|
+$bytes_strings.slice($bytes_per_step..-1).each do |line|
     all_coords = shortest_path_found.full_path
     x,y = line.split(',').map(&:to_i)
     $world[[x,y]] = 1
