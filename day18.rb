@@ -90,9 +90,9 @@ end
 shortest_path_found = shortest_path($start,$finish)
 #part 1
 puts shortest_path_found.cost
-
+all_coords = shortest_path_found.full_path
 $bytes_strings.slice($bytes_per_step..-1).each do |line|
-    all_coords = shortest_path_found.full_path
+    
     x,y = line.split(',').map(&:to_i)
     $world[[x,y]] = 1
     if all_coords.include?([x,y])
@@ -101,5 +101,6 @@ $bytes_strings.slice($bytes_per_step..-1).each do |line|
             puts "found at #{x},#{y}"
             break
         end
+        all_coords = shortest_path_found.full_path
     end
 end
