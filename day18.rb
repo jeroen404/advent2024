@@ -16,9 +16,6 @@ $finish = [$world_size-1,$world_size-1]
 
 $bytes_strings = []
 
-
-
-
 class Path < Struct.new(:head,:cost,:parent)
     include Comparable  
     def <=>(other)
@@ -33,10 +30,6 @@ class Path < Struct.new(:head,:cost,:parent)
         end
         return path
     end
-
-    # def length
-    #     return 1 + (self.parent ? self.parent.length : 0)
-    # end
 end
 
 def inside?(place)
@@ -46,44 +39,27 @@ end
 
 def neighbors(place)
     x,y = place
-    return [[x+1,y],[x-1,y],[x,y+1],[x,y-1]].select { |x,y| inside?([x,y]) }
+    return [[x+1,y],[x-1,y],[x,y+1],[x,y-1]].select { |x,y| inside?([x,y]) && ! $world[[x,y]] }
 end
 
-def shortest_paths(start,finish)
-    paths = PQueue.new([]) { |a, b| a[1] < b[1] }
-    #start = Path.new(start,0,nil)
-    paths.push([start, 0])
+def shortest_path(start,finish)
+    paths = PQueue.new([]) { |a, b| a.cost < b.cost }
+    start = Path.new(start,0,nil)
+    paths.push(start)
     visited = {}
-    # shortest_distance = nil
-    # all_shortest = []
     loop do
         shortest = paths.pop
         if !shortest
             return nil
         end
-        if shortest[0] == finish
-            return shortest[1]
-            # if !shortest_distance 
-            #     shortest_distance = shortest.cost
-            # end
-            # if shortest.cost == shortest_distance
-            # all_shortest << shortest
-            # end
+        if shortest.head == finish
+            return shortest
         end
-        #paths.delete(shortest)
-        #visited[[shortest[0]]] = true
-        #puts "visited=#{visited.keys.length}"
-        # paths.delete(shortest[0])ch do |neighbor|
-        neighbors(shortest[0]).each do |neighbor|
-            #puts "checking neighbor #{neighbor.inspect}"
-            cost = shortest[1] + 1
+        neighbors(shortest.head).each do |neighbor|
+            cost = shortest.cost + 1
             if !visited[[neighbor]]
-                visited[[neighbor]] = true
-                if ! $world[neighbor] || $world[neighbor] > cost
-                    #puts "from #{shortest.head} adding path to neighbor #{neighbor} cost=#{cost}"
-                    #paths[Path.new(neighbor,cost,shortest)] = true
-                    #paths[neighbor] = cost
-                    paths.push([neighbor, cost])
+                    paths.push(Path.new(neighbor,cost,shortest))
+                    visited[[neighbor]] = cost + 1
                 end
             end
         end
@@ -109,17 +85,22 @@ $bytes_per_step.times do |i|
     $world[[x,y]] = 1
 end
 
-print_world
+#print_world
 
 
+shortest_path_found = shortest_path($start,$finish)
+#part 1
+puts shortest_path_found.cost
 
-puts shortest_paths($start,$finish)
-
-$bytes_strings.slice($bytes_per_step..-1).each do |line|
+$bytes_strings.slice($bytes_per_step+1..-1).each do |line|
+    all_coords = shortest_path_found.full_path
     x,y = line.split(',').map(&:to_i)
     $world[[x,y]] = 1
-    if !shortest_paths($start,$finish)
-        puts "found at #{x},#{y}"
-        break
+    if all_coords.include?([x,y])
+        shortest_path_found = shortest_path($start,$finish)
+        if ! shortest_path_found
+            puts "found at #{x},#{y}"
+            break
+        end
     end
 end
