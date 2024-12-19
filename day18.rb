@@ -19,7 +19,7 @@ $bytes_strings = []
 class Path < Struct.new(:head,:cost,:parent)
     include Comparable  
     def <=>(other)
-        return self.cost <=> other.cost
+        return other.cost <=> self.cost # low is high priority
     end
     def full_path
         path = []
@@ -43,7 +43,7 @@ def neighbors(place)
 end
 
 def shortest_path(start,finish)
-    paths = PQueue.new([]) { |a, b| a.cost < b.cost }
+    paths = PQueue.new([])
     start = Path.new(start,0,nil)
     paths.push(start)
     visited = {}
@@ -90,20 +90,6 @@ end
 shortest_path_found = shortest_path($start,$finish)
 #part 1
 puts shortest_path_found.cost
-# all_coords = shortest_path_found.full_path
-# $bytes_strings.slice($bytes_per_step..-1).each do |line|   
-#     x,y = line.split(',').map(&:to_i)
-#     $world[[x,y]] = 1
-#     if all_coords.include?([x,y])
-#         shortest_path_found = shortest_path($start,$finish)
-#         if ! shortest_path_found
-#             puts "found at #{x},#{y}"
-#             break
-#         end
-#         all_coords = shortest_path_found.full_path
-#     end
-# end
-
 
 $bytes = $bytes_strings.map { |line| line.split(',').map(&:to_i) }
 
@@ -121,7 +107,6 @@ loop do
         stop_range = middle
     end
     $world = {}
-    puts "start_range: #{start_range}, stop_range: #{stop_range}"
     break if stop_range - start_range < 2
 end
 puts $bytes[start_range].join(',')
