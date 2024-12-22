@@ -11,11 +11,8 @@ def next_secret(a)
     return a
 end
 
-numbers = []
 #read from stdin
-while line = gets
-    numbers << line.to_i
-end
+numbers = $stdin.readlines.map { |line| line.to_i }
 
 #part 1
 puts numbers.map { |n| 2000.times.inject(n) { |a| next_secret(a) } }.sum
