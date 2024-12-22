@@ -67,7 +67,7 @@ end
 sequence_price_hash = Hash.new(0)
 numbers.length.times do |i|
     sequences_for_this_monkey = {}
-    price_changes[i].each_cons(4).each.with_index do |changes,j|
+    price_changes[i].each_cons(4).with_index do |changes,j|
         if !sequences_for_this_monkey[changes]
             sequence_price_hash[changes] += prices[i][j+4]
             sequences_for_this_monkey[changes] = true
