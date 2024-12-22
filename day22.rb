@@ -19,15 +19,12 @@ end
 
 #part 1
 puts numbers.map { |n| 2000.times.inject(n) { |a| next_secret(a) } }.sum
-#puts numbers.map { |n| part1(n,2000) }.inject(:+)
 
 prices = numbers.map { |n| Array.new(2000) { n = next_secret(n); n % 10 } }
 
-#price_changes = prices.map { |p| p.each_cons(2).map { |a,b| b - a } }
-
 sequence_price_hash = Hash.new(0)
 
-prices.each_with_index do |monkey_prices,i|
+prices.each do |monkey_prices|
     sequences_for_this_monkey = {}
     monkey_prices.each_cons(2).map { |a, b| b - a}.each_cons(4).with_index do |changes,j|
         unless sequences_for_this_monkey.has_key?(changes)
