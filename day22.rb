@@ -65,18 +65,19 @@ numbers.length.times do |i|
     price_changes << price_changes_for_this_monkey
 end
 
+puts "..."
 sequence_price_hash = Hash.new(0)
-sequences = Set.new
+#sequences = Set.new
 numbers.length.times do |i|
     sequences_for_this_monkey = {}
     price_changes[i].each_cons(4).each.with_index do |changes,j|
         if !sequences_for_this_monkey[changes]
             sequence_price_hash[changes] += prices[i][j+4]
             sequences_for_this_monkey[changes] = true
+            #sequences << changes
         end
-        sequences << changes
+
     end
 end
-
 puts sequence_price_hash.values.max
 
