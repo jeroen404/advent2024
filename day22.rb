@@ -65,33 +65,18 @@ numbers.length.times do |i|
     price_changes << price_changes_for_this_monkey
 end
 
-four_previous_changes_price_hash = {}
+sequence_price_hash = Hash.new(0)
 sequences = Set.new
 numbers.length.times do |i|
+    sequences_for_this_monkey = {}
     price_changes[i].each_cons(4).each.with_index do |changes,j|
-        four_previous_changes_price_hash[[i,changes]] ||= prices[i][j+4]
+        if !sequences_for_this_monkey[changes]
+            sequence_price_hash[changes] += prices[i][j+4]
+            sequences_for_this_monkey[changes] = true
+        end
         sequences << changes
     end
 end
 
-def total_value_for_sequence(size,lookuphash,sequence)
-    total = 0
-    size.times do |i|
-        if lookuphash[[i,sequence]]
-            total += lookuphash[[i,sequence]]
-        end
-    end
-    return total
-end
-
-puts "Calculating values for #{sequences.length} sequences"
-calculated_values = {}
-sequences.each do |fourchanges|
-     if !calculated_values[fourchanges]
-         calculated_values[fourchanges] = total_value_for_sequence(numbers.length,four_previous_changes_price_hash,fourchanges)
-     end
- end
- 
- #part 2
- puts calculated_values.values.max
+puts sequence_price_hash.values.max
 
