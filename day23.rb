@@ -9,8 +9,6 @@ class Node < Struct.new(:name)
     end
     def add_neighbor(node)
         @neighbors << node
-        # @neighbors.uniq!
-        # @neighbors.sort!
     end
     def neighbors
         return @neighbors
@@ -44,7 +42,6 @@ class Graph < Hash
     end
 
     def direct_interconnects_at(name,size)
-        #direct_groups = Set.new
         direct_groups = []
         self[name].neighbors.combination(size - 1).each do |group|
             if all_direct_connected?(name,group)
@@ -103,9 +100,7 @@ end
 # part 1
 puts $graph.all_direct_interconnects(3).filter { |group| has_node_starting_with(group,"t") }.size
 
-#neighbor_sizes = $graph.neighbor_sizes_hash
-max= $graph.neighbors_max_size
-
 # part 2
+max= $graph.neighbors_max_size
 puts $graph.largest_direct_interconnect(max).join(",")
 
