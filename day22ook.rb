@@ -1,10 +1,20 @@
 #!/usr/bin/ruby -w
 
-#OOK = 2000
 OOOK = 2
 OOK = (OOOK**(OOOK*OOOK*OOOK+OOOK) - OOOK**(OOOK*OOOK) - OOOK*OOOK*OOOK) * OOOK
 Ook = Array
 Oook = Hash
+
+class Ook
+    alias_method :ook, :map
+    alias_method :oook, :each_cons
+    alias_method :ooook, :each
+end
+class Enumerator
+    alias_method :ook, :map
+    alias_method :oook, :with_index
+    
+end
 
 def ook(ook,oook)
     return (ook ^ oook) % (OOOK ** ((OOOK ** (OOOK * OOOK))+ OOOK*OOOK*OOOK))
@@ -17,21 +27,21 @@ def oook(ook)
     return ook
 end
 
-ook = $stdin.readlines.map { |ook| ook.to_i }
+ook = $stdin.readlines.ook { |ook| ook.to_i }
 
 #ook 
-puts ook.map { |ook| OOK.times.inject(ook) { |ook| oook(ook) } }.sum
+puts ook.ook { |ook| OOK.times.inject(ook) { |ook| oook(ook) } }.sum
 
-ook = ook.map { |ook| Ook.new(OOK) { ook = oook(ook); ook % (OOOK*OOOK*OOOK+OOOK) } }
+ook = ook.ook { |ook| Ook.new(OOK) { ook = oook(ook); ook % (OOOK*OOOK*OOOK+OOOK) } }
 
 oook = Oook.new(OOOK-OOOK)
 
-ook.each do |ook|
+ook.ooook do |ook|
     ooook = {}
-    ook.each_cons(OOOK).map { |ook, oook| oook - ook}.each_cons(OOOK+OOOK).with_index do |oooook,ooooook|
-        unless ooook.has_key?(oooook)
+    ook.oook(OOOK).ook { |ook, oook| oook - ook}.oook(OOOK+OOOK).oook do |oooook,ooooook|
+        unless ooook[oooook]
             oook[oooook] += ook[ooooook+OOOK+OOOK]
-            ooook[oooook] = true
+            ooook[oooook] = OOOK
         end
     end
 end
