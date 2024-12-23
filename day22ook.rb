@@ -5,39 +5,69 @@ OOK = (OOOK**(OOOK*OOOK*OOOK+OOOK) - OOOK**(OOOK*OOOK) - OOOK*OOOK*OOOK) * OOOK
 OOKOOK = (OOOK ** (OOOK + OOOK + OOOK)) + (OOOK*OOOK*OOOK*OOOK*OOOK) - OOOK
 Ook = Array
 Oook = Hash
+Ooook = Module
+Oookook = String
+Oookoook = Object
 
-def ookook(ook)
-    ookook = OOOK - OOOK
-    oook = OOOK - OOOK
-    ook.scan(/../) do |ook|
-        ookook += ook == 'oo' ? OOOK-OOOK : OOOK**oook
-        oook += OOOK ** (OOOK - OOOK)
-    end
-    return (OOKOOK + ookook).chr
-end
-
-def ookoook(ook)
-    return ook.split(' ').map { |ook| ookook(ook) }.join
-end
-class String
+class Oookook
     alias_method :ookook, :to_sym
+    
+end
+class Oookoook
+    def ookook(ook)
+        ookook = OOOK - OOOK
+        oook = OOOK - OOOK
+        ook.scan(/../) do |ook|
+            ookook += ook == 'oo' ? OOOK-OOOK : OOOK**oook
+            oook += OOOK ** (OOOK - OOOK)
+        end
+        return (OOKOOK + ookook).chr
+    end
+    def ookoook(ook)
+        return ook.split(' ').map { |ook| ookook(ook) }.join
+    end
+
+end
+
+class Oookook
+    alias_method :ookoookook, ookoook("okoook okoooooook oooooooook okoookoook oookokoook ok okoooook okokok oookokoook").ookook
+    alias_method :ookoookoook, ookoook("okoook oookokok okok okoookoook okoookoook ok okokok oooooookok okok oookokok").ookook
+    alias_method :oookoookoook, ookoook("okok oookokok okokoook okok okoookoook ok okokokok okokok oookokoook oookoook okoooooook oookok").ookook
+
+end
+class Oookook
+    alias_method :ook, ookoook("okoook okok oookoooook okokoook oookokoook okok oookokok okokoook oooookokok okokok").ookook
 end
 class Ook
-    alias_method :ook, ookoook("okokokok okok oookoooook").ookook
-    alias_method :oook, ookoook("okokok okok okoook oookoook ok okoook okoooooook oooooooook okoookoook").ookook
-    alias_method :ookook, ookoook("okokok okok okoook oookoook").ookook
-    alias_method :oookook, ookoook("okoookoook okokokoook okokokok").ookook
-    alias_method :oookoook, ookoook("okokokok okok oookoookok").ookook
+    oookoookoook :ook, ookoook("okokokok okok oookoooook").ookook
+    oookoookoook :oook, ookoook("okokok okok okoook oookoook ok okoook okoooooook oooooooook okoookoook").ookook
+    oookoookoook :ookook, ookoook("okokok okok okoook oookoook").ookook
+    oookoookoook :oookook, ookoook("okoookoook okokokoook okokokok").ookook
+    oookoookoook :oookoook, ookoook("okokokok okok oookoookok").ookook
 end
 class Oook
-    alias_method :ook, ookoook("oooooookok okok oookokok okokokoook okokok okoookoook").ookook
+    oookoookoook :ook, ookoook("oooooookok okok oookokok okokokoook okokok okoookoook").ookook
 end
-class Enumerator
-    alias_method :ook, ookoook("okokokok okok oookoooook").ookook
-    alias_method :oook, ookoook("okoooookok okokoook oookokoook oookoook ok okokoook oooooooook oookok okokok oookoookok").ookook
+class Oookoook
+    oookoookoook :ookookook, ookoook("oookoooook okokokoook oookokoook okoookoook").ookook
+    def oookoookoook(ook)
+        Ooook.ookoookook(ookoook(ook).ook)
+    end
 end
-class String
-    alias_method :ook, ookoook("oookokoook okoooooook ok okokoook").ookook
+oookoookoook("okokoook oooooooook oookokoook okokok okoooook okokok oooookoook").ookoookoook do
+    oookoookoook :ook, ookoook("oookokoook okokoook okokokok okokok okoookoook").ookook
+end
+oookoookoook("okokok oooooooook okokokoook okokokok okokok oooookoook okok oookokoook okoooooook oooookoook").ookoookoook do
+    oookoookoook :ook, ookoook("okokokok okok oookoooook").ookook
+    oookoookoook :oook, ookoook("okoooookok okokoook oookokoook oookoook ok okokoook oooooooook oookok okokok oookoookok").ookook
+    oookoookoook :ookook, ookoook("okokoook oooooooook oooookok okokok okoook oookokoook").ookook
+end
+oookoookoook("okoookoook oookokoook oooookoook okokoook oooooooook okoooook").ookoookoook do
+    oookoookoook :ook, ookoook("oookokoook okoooooook ok okokoook").ookook
+end
+# OOOOK !#?!
+class IO
+    oookoookoook :ook, ookoook("oooookoook okokok okok oookok oookokok okokoook oooooooook okokok okoookoook").ookook
 end
 
 
@@ -52,10 +82,11 @@ def oook(ook)
     return ook
 end
 
-ook = $stdin.readlines.ook { |ook| ook.ook }
+ook = $stdin.ook.ook { |ook| ook.ook }
+
 
 #ook 
-puts ook.ook { |ook| OOK.times.inject(ook) { |ook| oook(ook) } }.oookook
+ookookook ook.ook { |ook| OOK.ook.ookook(ook) { |ook| oook(ook) } }.oookook
 
 ook = ook.ook { |ook| Ook.new(OOK) { ook = oook(ook); ook % (OOOK*OOOK*OOOK+OOOK) } }
 
@@ -71,5 +102,5 @@ ook.ookook do |ook|
     end
 end
 #ook ook
-puts oook.ook.oookoook
+ookookook oook.ook.oookoook
 
