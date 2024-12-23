@@ -23,15 +23,10 @@ class String
     alias_method :ookook, :to_sym
 end
 class Ook
-    # alias_method :ook, :map
     alias_method :ook, ookoook("okokokok okok oookoooook").ookook
-    # alias_method :oook, :each_cons
     alias_method :oook, ookoook("okokok okok okoook oookoook ok okoook okoooooook oooooooook okoookoook").ookook
-    # alias_method :ookook, :each
     alias_method :ookook, ookoook("okokok okok okoook oookoook").ookook
-    # alias_method :oookook, :sum
     alias_method :oookook, ookoook("okoookoook okokokoook okokokok").ookook
-    #alias_method :oookoook, :max
     alias_method :oookoook, ookoook("okokokok okok oookoookok").ookook
 end
 class Oook
