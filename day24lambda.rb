@@ -1,26 +1,17 @@
 #!/usr/bin/ruby -w
 
 $allwires = {}
+$type_mapping = { "AND" => "&","OR" => "|","XOR" => "^",}
 
 #read from stdin
 while line = gets
-    if line == "\n"
-        break
-    end
-    name,value_s = line.chomp.split(': ')
-    value = value_s.to_i
-    $allwires[name] = value == 1 ? -> { 1 } : -> { 0 }
+    break if line == "\n"
+    name,value = line.chomp.split(': ')
+    $allwires[name] = value == "1" ? -> { 1 } : -> { 0 }
 end
 while line = gets
     input1name,typename,input2name,outputname = line.match(/(.*) (.*) (.*) -> (.*)/).captures
-    case typename
-    when "AND"
-       $allwires[outputname] = proc {|in1=input1name,in2=input2name| ->  {$allwires[in1].call & $allwires[in2].call}}.call
-    when "OR"
-        $allwires[outputname] = proc {|in1=input1name,in2=input2name| ->  { $allwires[in1].call | $allwires[in2].call}}.call
-    when "XOR"
-        $allwires[outputname] = proc {|in1=input1name,in2=input2name| ->  {$allwires[in1].call ^ $allwires[in2].call}}.call
-    end
+    $allwires[outputname] = proc {|in1, in2, op| -> { $allwires[in1].call.send(op, $allwires[in2].call) }}.call(input1name, input2name, $type_mapping[typename])
 end
 
 $z_wires = $allwires.keys.filter { |wirename| wirename.start_with?("z") }.sort
