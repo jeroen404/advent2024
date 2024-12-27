@@ -30,9 +30,4 @@ loop do
     this_shema = this_shema.zip(this_char_array).map { |a,b| a + b }
 end
 
-puts "keys"
-puts $keys.inspect
-puts "locks"
-puts $locks.inspect
-
 puts $keys.map { |key| $locks.map { |lock| key.zip(lock).map { |a,b| a + b }.any? { |x| x >= $height } ? 0 : 1 }.sum }.sum 
