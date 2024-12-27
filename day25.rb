@@ -7,7 +7,6 @@ $width = 5
 $height = 6
     
 this_shema = Array.new($width) { -1 }
-first_line = true
 type = nil
 loop do
     this_line = gets
@@ -15,13 +14,12 @@ loop do
         ( type == :lock ? $locks : $keys ) << this_shema
         break
     end
-    if first_line
+    if type == nil
         type = this_line.start_with?("#") ? :lock : :key
-        first_line = false
     end
     if this_line == "\n"
-        first_line = true 
         ( type == :lock ? $locks : $keys ) << this_shema
+        type = nil
         this_shema = Array.new($width) { -1 }
         next
     end
