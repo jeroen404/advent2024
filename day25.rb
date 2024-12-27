@@ -23,8 +23,8 @@ loop do
         this_shema = Array.new($width) { -1 }
         next
     end
-    this_line.chomp!
-    this_char_array = this_line.chars.map { |c| c == "#" ? 1 : 0 }     
+    #this_line.chomp!
+    this_char_array = this_line.chomp.chars.map { |c| c == "#" ? 1 : 0 }     
     this_shema = this_shema.zip(this_char_array).map { |a,b| a + b }
 end
 
